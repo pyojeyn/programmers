@@ -7,32 +7,35 @@ import java.util.stream.LongStream;
 
 
 /*
- * 인덱스 바꾸기
- * 문자열 my_string과 정수 num1, num2가 매개변수로 주어질 때, my_string에서
- * 인덱스 num1과 인덱스 num2에 해당하는 문자를 바꾼 문자열을 return 하도록
- * solution 함수를 완성해보세요.
- * */
+    최대값 만들기(2)
+    정수 배열 numbers가 매개변수로 주어집니다.
+    numbers의 원소 중 두 개를 곱해 만들 수 있는 최댓값을 return하도록 solution 함수를 완성해주세요.
+ */
 public class Solution1 {
     public static void main(String[] args) {
-//        System.out.println(solution("AbcAbcA", "AAA"));
-        System.out.println(changeIndex("hello", 1, 2));
+
+        System.out.println(solution(new int[]{0, 0, 1, 0, 9}));
+//        System.out.println(solution(new int[]{-20, 1, 1, 4, -5}));
+//        System.out.println(solution(new int[]{1, 2, -3, 4, -5}));
+//        System.out.println(solution(new int[]{0, -31, 24, 10, 1, 9}));
+//        System.out.println(solution(new int[]{10, 20, 30, 5, 5, 20, 5}));
+
 
     }
 
-    public static int solution(String str1, String str2){
-        return str1.contains(str2) ? 1 : 2;
-    }
+    public static int solution(int[] numbers){
+        int answer = 0;
 
-    public static String changeIndex(String my_string, int num1, int num2){
-        String answer = "";
-        char[] charArr = my_string.toCharArray();
+        // ** 정렬이 가능한지 먼저 떠올리기.
+        // 정렬.
+        Arrays.sort(numbers);
 
+        // 가장 큰 두 양수의 곱
+        int pMax = numbers[numbers.length -1] * numbers[numbers.length -2];
+        // 가장 작은 두 음수의 곱
+        int nMax = numbers[0] * numbers[1];
 
-        charArr[num1] = my_string.charAt(num2);
-        charArr[num2] = my_string.charAt(num1);
-
-        answer = String.valueOf(charArr);
-
+        answer = Math.max(pMax, nMax);
         return answer;
     }
 }

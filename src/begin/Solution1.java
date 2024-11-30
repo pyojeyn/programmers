@@ -7,20 +7,21 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 
-// 배열의 유사도
+// 중복된 숫자개수
+/* 정수가 담긴 배열 array와 정수 n이 매개변수로 주어질 때,
+array에 n이 몇 개 있는 지를 return 하도록 solution 함수를 완성해보세요. */
 public class Solution1 {
     public static void main(String[] args) {
-        String[] s1 = {"n", "omg"};
-        String[] s2 = {"m", "dot"};
-
-        System.out.println(solution(s1, s2));
+        int[] arr = {1,1,2,3,4,5};
+        System.out.println(solution(arr, 1));
 
     }
 
-    public static int solution(String[] s1, String[] s2) {
+    public static int solution(int[] array, int n){
         int answer = 0;
 
-        answer = (int) Arrays.stream(s1).filter(e -> Arrays.stream(s2).anyMatch(e::equals)).count();
+        answer = (int) Arrays.stream(array).filter(a -> a == n).count();
+
         return answer;
     }
 }

@@ -7,55 +7,51 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 
-// 옷가게 할인받기
-/*
-* 머쓱이네 옷가게는 10만 원 이상 사면 5%, 30만 원 이상 사면 10%, 50만 원 이상 사면 20%를 할인해줍니다.
-구매한 옷의 가격 price가 주어질 때, 지불해야 할 금액을 return 하도록 solution 함수를 완성해보세요.
-* */
+// 분수의 덧셈
 public class Solution1 {
     public static void main(String[] args) {
-        System.out.println(solution(150000));
+        System.out.println(Arrays.toString(solution(9, 2, 1, 3)));
     }
 
-    // 나의 풀이.. 더러워..
-    public static int solution(int price){
-        int answer = 0;
-        double result = price * 0.05;
-        System.out.println("double result="+ result);
-        if(price >= 100000 && price < 300000){
-            price -= price * 0.05;
-            System.out.println("price*0.05 : "+ price * 0.05);
-            System.out.println("price="+ price);
-        }else if(price >= 300000 && price < 500000){
-            System.out.println("price*0.1 : "+ price * 0.1);
-            price -= price * 0.1;
-            System.out.println("price="+ price);
-        }else if(price >= 500000){
-            price -= price * 0.2;
-            System.out.println("price*0.2 : "+ price * 0.2);
-            System.out.println("price="+ price);
-        }
-        answer = price;
+
+
+
+    public static int[] solution(int numer1, int denom1, int numer2, int denom2) {
+        int[] answer = new int[2];
+
+        // 두 분수의 합
+        int numerator = numer1 * denom2 + numer2 * denom1; // 분자 합
+        int denominator = denom1 * denom2; // 분모 곱 -> 분모의 최소 공배수
+
+        // 분자와 분모를 약분
+        int gcd = findGCD(numerator, denominator);
+        numerator /= gcd;
+        denominator /= gcd;
+
+        System.out.println("분자: " + numerator);
+        System.out.println("분모: " + denominator);
+        answer[0] = numerator;
+        answer[1] = denominator;
         return answer;
     }
 
-    // 다른 사람의 풀이..
-    public int solution_1(int price){
-        int answer = 0;
+    // 최대 공약수(GCD) 계산 함수
+    // GCD : Greatest Common Divisor
+    /*
+     * 유클리드호제법
+     * 2개의 자연수(또는 정식) a, b에 대해서 a를 b로 나눈 나머지를 r이라 하면(단, a>b),
+     * a와 b의 최대공약수는 b와 r의 최대공약수와 같다.
+     * 이 성질에 따라, b를 r로 나눈 나머지 r'를 구하고,
+     * 다시 r을 r'로 나눈 나머지를 구하는 과정을 반복하여 나머지가 0이 되었을 때,
+     * 나누는 수가 a와 b의 최대공약수이다.
+     * */
+    private static int findGCD(int numerator, int denominator){
+        while (denominator != 0){
+            int tmp = denominator;
+            denominator = numerator % denominator;
+            numerator = tmp;
 
-        // 높은 값부터 잡히게 해야 작은 값 비교하는 if 문에 안잡힘.
-        // 그리고 뺄샘 할 필요도 없이 퍼센테이지를 먼저 할인률 뺀걸 곱하면됨..
-        if(price >= 500000){
-            return (int) (price * 0.8);
         }
-
-        if(price >= 300000){
-            return (int) (price * 0.9);
-        }
-
-        if(price >= 100000){
-            return (int) (price * 0.95);
-        }
-        return price;
+        return numerator;
     }
 }

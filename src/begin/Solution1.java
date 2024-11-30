@@ -7,51 +7,54 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 
-// 분수의 덧셈
+/*
+모음제거
+* 영어에선 a, e, i, o, u 다섯 가지 알파벳을 모음으로 분류합니다.
+* 문자열 my_string이 매개변수로 주어질 때 모음을 제거한 문자열을 return하도록 solution 함수를 완성해주세요.
+*/
 public class Solution1 {
     public static void main(String[] args) {
-        System.out.println(Arrays.toString(solution(9, 2, 1, 3)));
+        System.out.println(solution("nice to meet you"));
+        System.out.println(solution_1("nice to meet you"));
+        System.out.println(solution_2("nice to meet you"));
     }
 
+    // myString 이 바뀔때 마다 길이가 변해서 for문의 동작 수가 바뀜;
+    // 1. 새로운 문자열을 생성. StringBuilder() 로..
+    public static String solution(String my_string){
+        StringBuilder answer = new StringBuilder();
+        List<String> vowelList = Arrays.asList("a", "e", "i", "o", "u");
+
+        for (int i=0; i<my_string.length(); i++){
+            String iChar = Character.toString(my_string.charAt(i));
+            if(!vowelList.contains(iChar)){
+                answer.append(iChar);
+            }
+        }
 
 
 
-    public static int[] solution(int numer1, int denom1, int numer2, int denom2) {
-        int[] answer = new int[2];
 
-        // 두 분수의 합
-        int numerator = numer1 * denom2 + numer2 * denom1; // 분자 합
-        int denominator = denom1 * denom2; // 분모 곱 -> 분모의 최소 공배수
 
-        // 분자와 분모를 약분
-        int gcd = findGCD(numerator, denominator);
-        numerator /= gcd;
-        denominator /= gcd;
+        return answer.toString();
+    }
 
-        System.out.println("분자: " + numerator);
-        System.out.println("분모: " + denominator);
-        answer[0] = numerator;
-        answer[1] = denominator;
+    // 2. 모음 List 에서 향상된 for 문을 사용.
+    public static String solution_1(String my_string){
+        String answer = "";
+        List<String> vowelList = Arrays.asList("a", "e", "i", "o", "u");
+
+        for (String v: vowelList){
+            my_string = my_string.replace(String.valueOf(v), "");
+        }
+        answer = my_string;
         return answer;
     }
 
-    // 최대 공약수(GCD) 계산 함수
-    // GCD : Greatest Common Divisor
-    /*
-     * 유클리드호제법
-     * 2개의 자연수(또는 정식) a, b에 대해서 a를 b로 나눈 나머지를 r이라 하면(단, a>b),
-     * a와 b의 최대공약수는 b와 r의 최대공약수와 같다.
-     * 이 성질에 따라, b를 r로 나눈 나머지 r'를 구하고,
-     * 다시 r을 r'로 나눈 나머지를 구하는 과정을 반복하여 나머지가 0이 되었을 때,
-     * 나누는 수가 a와 b의 최대공약수이다.
-     * */
-    private static int findGCD(int numerator, int denominator){
-        while (denominator != 0){
-            int tmp = denominator;
-            denominator = numerator % denominator;
-            numerator = tmp;
-
-        }
-        return numerator;
+    // 3. 한번에 제거. (정규식 사용)
+    public static String solution_2(String my_string){
+        String answer = "";
+        answer = my_string.replaceAll("[aeiou]", "");
+        return answer;
     }
 }

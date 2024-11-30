@@ -6,28 +6,25 @@ import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 
 /*
-약수구하기
-* 정수 n이 매개변수로 주어질 때,
-* n의 약수를 오름차순으로 담은 배열을 return하도록 solution 함수를 완성해주세요.
+배열자르기
+* 정수 배열 numbers와 정수 num1, num2가 매개변수로 주어질 때,
+* numbers의 num1번 째 인덱스부터 num2번째 인덱스까지 자른 정수 배열을 return 하도록 solution 함수를 완성해보세요.
 * */
 public class Solution1 {
-
     public static void main(String[] args) {
-        System.out.println(Arrays.toString(solution(24)));
+        System.out.println(Arrays.toString(solution(new int[]{1, 2, 3, 4, 5}, 1, 3)));
     }
 
-    public static int[] solution(int n){
-        List<Integer> tmpList = new ArrayList<>();
+    public static int[] solution(int[] numbers, int num1, int num2){
 
+        List<Integer> tmp = new ArrayList<>();
 
-        for(int i=1; i<=n; i++){
-            if(n % i == 0){
-                tmpList.add(i);
+        for(int i=0; i<numbers.length; i++){
+            if(i >= num1 && i <= num2){
+                tmp.add(numbers[i]);
             }
         }
-        int[] answer = tmpList.stream().mapToInt(Integer::intValue).toArray();
-        Arrays.sort(answer);
 
-        return  answer;
+        return tmp.stream().mapToInt(t -> t).toArray();
     }
 }

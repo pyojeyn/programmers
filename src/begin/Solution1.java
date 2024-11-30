@@ -6,55 +6,82 @@ import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 
 /*
-숨어있는 숫자의 덧셈(1)
-* 문자열 my_string이 매개변수로 주어집니다.
-* my_string안의 모든 자연수들의 합을 return하도록 solution 함수를 완성해주세요.
+[가장 큰 수 찾기]
+* 정수 배열 array가 매개변수로 주어질 때,
+* 가장 큰 수와 그 수의 인덱스를 담은 배열을 return 하도록 solution 함수를 완성해보세요.
 * */
 public class Solution1 {
-
     public static void main(String[] args) {
-        System.out.println(solution("aAb1B2cC34oOp"));
+        int[] array = {9, 10, 11, 8};
+
+        System.out.println(Arrays.toString(solution_1(array)));
+        System.out.println(Arrays.toString(solution_2(array)));
+
     }
 
-    public static int solution(String my_string){
-        int answer = 0;
-        char[] charArr = my_string.toCharArray();
+    public static int[] solution(int[] array){
+        int[] answer = new int[2];
 
-        for (char c : charArr) {
-            if(String.valueOf(c).matches("^[0-9]*$")){
-                answer += Integer.parseInt(String.valueOf(c));
-            };
+        // 배열 먼저 정렬
+        // 배열은 참조형이라서 대입 ㄴㄴ
+        // 값 하나하나 세팅 후 새로운 주소만들어야됨.
+        int[] tmpArray = new int[array.length];
+        for(int i = 0; i<tmpArray.length; i++){
+            tmpArray[i] = array[i];
         }
+        // 정렬후 가장 큰값 변수에 대입
+        Arrays.sort(tmpArray);
+        int biggestNum = tmpArray[tmpArray.length - 1];
+
+        // 매개변수 array 돌면서 가장 큰값대입되어있는 변수랑 비교.
+        for(int i=0; i<array.length; i++){
+            if(biggestNum == array[i]){
+                answer[0] = biggestNum;
+                answer[1] = i;
+            }
+        }
+
+
         return answer;
     }
 
-    // "^[0-9]*$"
-    // ^ : 문자열의 시작
-    // * : 0번 이상 반복
-    // $ : 문자열의 끝끝
+    // 개선할 점.
+    // 1. 배열 복사가 불필요.
+    // 2. O(n) 의 시간 복잡도로 해결 가능.
+    //    - 현재 코드는 배열 정렬에 O(n log n) 이 소요됨. 이 문제는 한 번 순회만으로 해결 가능.
+    public static int[] solution_2(int[] array){
+        // 가장 큰수와 인덱스 초기화.
+        int biggestNumber = array[0];
+        int index = 0;
 
-
-    // 다른 사람 풀이.
-    public static int solution_1(String my_string){
-        int answer = 0;
-
-        // 숫자빼고 다 지움.
-        String str = my_string.replaceAll("[^0-9]", "");
-
-        for(char ch: str.toCharArray()){
-            answer += Character.getNumericValue(ch);
+        // 위에 0 의 것들이 초기화 됬으니까 1부터 시작.
+        for(int i=1; i<array.length; i++){
+            if (array[i] > biggestNumber){
+                biggestNumber = array[i];
+                index = i;
+            }
         }
-
-        return answer;
+        return new int[]{biggestNumber, index};
     }
 
 
 
 
 
+    // 다른 사람 답.
+    public static int[] solution_1(int[] array) {
 
-    // ===
-    // "[^0-9]"의 의미:
-    // [^...] 대괄호 안에 있는 문자들을 제외한 것에  일치.
-    // 0-9 : 숫자 0~9 의 범위.
+        // 처음 인덱스의 값으로 초기화
+        int[] answer = {array[0],0};
+
+        // i 를 1부터 시작, answer와 array를 비교.
+        for(int i = 1; i < array.length; i++){
+            if(answer[0] < array[i]){
+                answer[0] = array[i];
+                answer[1] = i;
+            }
+        }
+        return answer;
+    }
 }
+

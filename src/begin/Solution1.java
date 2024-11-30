@@ -5,57 +5,56 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
 
-// 가위 바위 보.
 /*
- * 가위는 2 바위는 0 보는 5로 표현합니다.
- * 가위 바위 보를 내는 순서대로 나타낸 문자열 rsp가 매개변수로 주어질 때,
- * rsp에 저장된 가위 바위 보를 모두 이기는 경우를 순서대로 나타낸 문자열을 return하도록
- * solution 함수를 완성해보세요.
- * */
+숨어있는 숫자의 덧셈(1)
+* 문자열 my_string이 매개변수로 주어집니다.
+* my_string안의 모든 자연수들의 합을 return하도록 solution 함수를 완성해주세요.
+* */
 public class Solution1 {
 
+    public static void main(String[] args) {
+        System.out.println(solution("aAb1B2cC34oOp"));
+    }
 
-    // 나의 답....
-    public static String solution(String rsp){
-        String win2 = "0";
-        String win0 = "5";
-        String win5 = "2";
+    public static int solution(String my_string){
+        int answer = 0;
+        char[] charArr = my_string.toCharArray();
 
-        StringBuilder sb = new StringBuilder();
-        for(int i=0; i<rsp.length(); i++){
-            String compareStr = String.valueOf(rsp.charAt(i));
-
-            if(compareStr.equals("2")){
-                sb.append(win2);
-            }
-
-            if(compareStr.equals("0")){
-                sb.append(win0);
-            }
-
-            if(compareStr.equals("5")){
-                sb.append(win5);
-            }
+        for (char c : charArr) {
+            if(String.valueOf(c).matches("^[0-9]*$")){
+                answer += Integer.parseInt(String.valueOf(c));
+            };
         }
-        return sb.toString();
+        return answer;
+    }
+
+    // "^[0-9]*$"
+    // ^ : 문자열의 시작
+    // * : 0번 이상 반복
+    // $ : 문자열의 끝끝
+
+
+    // 다른 사람 풀이.
+    public static int solution_1(String my_string){
+        int answer = 0;
+
+        // 숫자빼고 다 지움.
+        String str = my_string.replaceAll("[^0-9]", "");
+
+        for(char ch: str.toCharArray()){
+            answer += Character.getNumericValue(ch);
+        }
+
+        return answer;
     }
 
 
-    // 다른 사람이 푼 답.
-    // Map 을 사용할 수 있다.
-    public static String solution_1(String rsp){
-        Map<String, String> winNumbers = new HashMap<>();
-        winNumbers.put("2", "0");
-        winNumbers.put("0", "5");
-        winNumbers.put("5", "2");
-
-        StringBuilder stringBuilder = new StringBuilder();
-
-        for(int i =0; i <rsp.length(); i++){
-            stringBuilder.append(winNumbers.get(rsp.substring(i, i + 1)));
-        }
 
 
-        return stringBuilder.toString();
-    }
+
+
+    // ===
+    // "[^0-9]"의 의미:
+    // [^...] 대괄호 안에 있는 문자들을 제외한 것에  일치.
+    // 0-9 : 숫자 0~9 의 범위.
 }

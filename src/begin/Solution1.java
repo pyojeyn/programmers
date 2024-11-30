@@ -1,46 +1,34 @@
 package begin;
 
+import java.util.Arrays;
 import java.util.stream.IntStream;
 
-// 짝수의 합
+// 배열의 평균값
 public class Solution1 {
 
     public static void main(String[] args) {
-        System.out.println(solution(6));
-        System.out.println(solution_2(6));
+        int[] arrInt = {1, 2, 3, 4, 5};
+        System.out.println(solution(arrInt));
+        System.out.println(solution_1(arrInt));
     }
 
+    public static double solution(int[] numbers) {
+        double answer = 0;
 
-    // mine
-    public static int solution(int n) {
-        int answer = 0;
+        int sizeOfNumbers = numbers.length;
 
-        boolean isValid = (n > 0 && n <= 1000);
-
-        if(isValid){
-            for(int i = 1; i <= n; i++){
-                if(i % 2 == 0){
-                    answer += i;
-                }
-            }
+        for(int i = 0; i < sizeOfNumbers; i++){
+            answer += numbers[i];
         }
-        return answer;
-    }
 
-    // others
-    public static int solution_1(int n) {
-        int answer = 0;
-        for(int i=2; i<=n; i+=2){
-            answer+=i;
-        }
+        answer = answer / sizeOfNumbers;
+
 
         return answer;
     }
 
 
-    public static int solution_2(int n) {
-        return IntStream.rangeClosed(0, n)
-                .filter(e -> e % 2 == 0)
-                .sum();
+    public static double solution_1(int[] numbers) {
+        return Arrays.stream(numbers).average().orElse(0);
     }
 }

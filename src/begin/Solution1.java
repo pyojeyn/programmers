@@ -6,56 +6,35 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.LongStream;
 
-// 배열 뒤짚기.
+// 양꼬치
 public class Solution1 {
     public static void main(String[] args) {
-        int[] arrInt = {1, 2, 3, 4, 5, 10};
-        System.out.println(Arrays.toString(solution(arrInt)));
-        System.out.println(Arrays.toString(solution_2(arrInt)));
-        System.out.println(Arrays.toString(solution_3(arrInt)));
+        int howMuch = solution(64, 6);
+
+        System.out.println("howMuch?" + howMuch);
+        int a = 9;
+        int b = 10;
+        System.out.println(a/b);
     }
+    public static int solution(int n, int k) {
+        // n : 양꼬치
+        // k : 음료수
+        // 10인분 먹었을 시 음료수1개 꽁짜.
+        int answer = 0;
 
-    // 내가 한거
-    public static int[] solution(int[] num_list) {
-        int sizeOfNumList = num_list.length;
-        int[] answer = new int[sizeOfNumList]; // 최종 반환해줄 배열. num_list 와 동일한 길이로 초기화
+        // 내가 푼 것.
+//        if(n >= 10){
+//            int howFreeDrink = n / 10;
+//            answer =  (12000 * n) + (2000 * (k - howFreeDrink));
+//        }else{
+//            answer = (12000 * n) + (2000 * k);
+//        }
 
-        boolean isValid = (num_list.length >= 1 && num_list.length <= 1000);
+        // 개선 -> 정수 나눗셈이므로 10보다 작은수를 10으로 나누면 0 이 되므로.
+        // 아래처럼 if문 필요 없이 바로 10으로 나눠서 반환해주면 된다.
+        answer = 12000 * n + (k - n/10) * 2000;
 
-        if(isValid) {
-            // size -- 하면 size 값이 변동되므로 배열 끝까지 출력 못해서 별도의 카운트다운 변수를 만들어줌.
-            // int cntDownSize = sizeOfNumList; // 개선점 -> num_list[sizeOfNumList - 1 - i]; 로 해결
-            for(int i=0; i<sizeOfNumList; i++){
-                answer[i] = num_list[sizeOfNumList - 1 - i]; // 배열 끝자리값부터 역순으로 입력해줘야 하니 마지막 인덱스 -1 부터 조회하고 대입해줌.
-                // cntDownSize--;
-            }
-        }
+
         return answer;
-    }
-
-    // 다른 사람 풀이1
-    public static int[] solution_2(int[] num_list) {
-        return LongStream.range(1, num_list.length + 1)
-                .mapToInt(i -> num_list[(int) (num_list.length - i)])
-                .toArray();
-    }
-
-    // 다른 사람 풀이2
-    public static int[] solution_3(int[] num_list) {
-        int[] answer = new int[num_list.length];
-        int startIdx = 0;
-        for(int i = num_list.length-1; i>=0; i--){
-            answer[startIdx] = num_list[i];
-            startIdx++;
-        }
-        return answer;
-    }
-
-
-    // 다른 사람 풀이3
-    public static int[] solution_4(int[] numList) {
-        List<Integer> list = Arrays.stream(numList).boxed().collect(Collectors.toList());
-        Collections.reverse(list);
-        return list.stream().mapToInt(Integer::intValue).toArray();
     }
 }

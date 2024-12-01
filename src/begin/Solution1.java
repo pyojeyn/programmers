@@ -7,46 +7,58 @@ import java.util.stream.LongStream;
 
 
 /*
-    [배열 회전시키기]
-    정수가 담긴 배열 numbers와 문자열 direction가 매개변수로 주어집니다.
-    배열 numbers의 원소를 direction방향으로 한 칸씩 회전시킨 배열을 return하도록
-    solution 함수를 완성해주세요
+    369게임
+    머쓱이는 친구들과 369게임을 하고 있습니다. 369게임은 1부터 숫자를 하나씩 대며 3, 6, 9가 들어가는 숫자는 숫자 대신 3, 6, 9의 개수만큼 박수를 치는 게임입니다.
+    머쓱이가 말해야하는 숫자 order가 매개변수로 주어질 때, 머쓱이가 쳐야할 박수 횟수를 return 하도록 solution 함수를 완성해보세요.
 
  */
 public class Solution1 {
     public static void main(String[] args) {
-        System.out.println(Arrays.toString(solution(new int[]{1, 2, 3}, "right")));
-        System.out.println(Arrays.toString(solution(new int[]{4, 455, 6, 4, -1, 45, 6}, "left")));
 
+        System.out.println(solution(336699));
+        System.out.println(wrongSolution(30));
+        System.out.println(fixedSolution(30));
     }
 
-    public static int[] solution(int[] numbers, String direction){
+    public static int solution(int order){
+        // 결국 이 두번째 코드로 정답을 맞췄는데..!
 
-        // 1. int[] -> Integer[] 변환
-//        Integer[] integerArray = Arrays.stream(numbers).boxed().toArray(Integer[]::new);
-        // 2. Integer[] -> List<Integer> 변환
-//        List<Integer> numberList = new ArrayList<>(Arrays.asList(integerArray));
+        int answer = 0;
 
-        // 개선1. 배열 -> 리스트 변환 간소화
-        List<Integer> numberList = Arrays.stream(numbers)
-                .boxed().collect(Collectors.toList());
 
-        if(!numberList.isEmpty()){
-            if(direction.equals("right")){
-                // 맨 마지막 값 제거, 제거하고 반환된 제거된 맨 마지막 값 변수에 대입
-                int lastElement = numberList.remove(numberList.size() -1);
-                // 대입한 변수 맨 앞에 세팅
-                numberList.add(0, lastElement);
-            }else{
-                // 맨 앞자리 값 제거, 제거하고 반환된 제거된 맨 앞자리값 변수에 대입
-                int firstElement = numberList.remove(0);
+        // 개선점1. 굳이 메소드 쓸 필요 없음 연산으로 빈문자열을 더해주면 문자열로 변환.
+//        String orderStr = String.valueOf(order);
+        String orderStr = order + "";
+        String[] orderStrArr = orderStr.split("");
 
-                // 맨 뒤에 넣어줌.
-                // 현재 존재하는 제일 마지막 인덱스(numberList.size() -1) 에서 + 1 이므로
-                // 맨 뒤에 새로운 값을 추가할때는 numberList.size() 가 맞다.
-                numberList.add(numberList.size(), firstElement);
+        for (String s : orderStrArr) {
+            if(Integer.parseInt(s) == 3 ||
+            Integer.parseInt(s) == 6 ||
+            Integer.parseInt(s) == 9){
+                answer++;
             }
         }
-        return numberList.stream().mapToInt(Integer::intValue).toArray();
+
+
+
+        return answer;
+    }
+
+    public static int wrongSolution(int order){
+//         처음에 짠 코드인데 틀렸다.
+//         틀린 이유: 숫자 0도 필터 조건 0에 포함이된다
+//         30 이 매개변수로 주어지면 기대 값은 1인데 2가 나오기때문에 틀림.
+//         숫자가 3,6,9 인지 명확히 확인하는 조건을 추가해야 함.
+        String[] orderStrArr = String.valueOf(order).split("");
+        return (int)Arrays.stream(orderStrArr).mapToInt(Integer::parseInt)
+                .filter(z -> z % 3 == 0).count();
+    }
+
+    public static int fixedSolution(int order){
+        String[] orderStrArr = String.valueOf(order).split("");
+        return (int) Arrays.stream(orderStrArr)
+                .mapToInt(Integer::parseInt)
+                .filter(n -> n == 3 || n == 6 || n == 9)
+                .count(); // 3,6,9 만 필터링.
     }
 }

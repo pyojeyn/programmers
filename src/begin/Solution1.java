@@ -7,23 +7,27 @@ import java.util.stream.LongStream;
 
 
 /*
-    [문자열 정렬하기]
-    영어 대소문자로 이루어진 문자열 my_string이 매개변수로 주어질 때,
-    my_string을 모두 소문자로 바꾸고 알파벳 순서대로 정렬한 문자열을 return 하도록 solution 함수를 완성해보세요.
+    [암호 해독]
+    군 전략가 머쓱이는 전쟁 중 적군이 다음과 같은 암호 체계를 사용한다는 것을 알아냈습니다.
+    - 암호화된 문자열 cipher를 주고받습니다.
+    - 그 문자열에서 code의 배수 번째 글자만 진짜 암호입니다.
+    문자열 cipher와 정수 code가 매개변수로 주어질 때 해독된 암호 문자열을 return하도록
+    solution 함수를 완성해주세요.
  */
-// 1점 획득. 단번에 통과.
+// 3점 획득. 단번에 통과!
+
 public class Solution1 {
     public static void main(String[] args) {
-        System.out.println(solution("Bcad"));
-        System.out.println(solution("heLLo"));
-        System.out.println(solution("Python"));
+        System.out.println(solution("dfjardstddetckdaccccdegk", 4));
+        System.out.println(solution("pfqallllabwaoclk", 2));
     }
 
-    public static String solution(String my_string){
-        String lowerCase = my_string.toLowerCase();
-        char[] lowerCaseCharArr = lowerCase.toCharArray();
-        Arrays.sort(lowerCaseCharArr); //  ASCII 값 순서로 정렬
-        return String.valueOf(lowerCaseCharArr);
+    public static String solution(String cipher, int code){
+        StringBuilder answer = new StringBuilder();
+        for(int i=code-1; i<cipher.length(); i+=code){
+            answer.append(cipher.charAt(i));
+        }
+        return answer.toString();
     }
 
 

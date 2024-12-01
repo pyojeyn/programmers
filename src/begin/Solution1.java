@@ -7,27 +7,36 @@ import java.util.stream.LongStream;
 
 
 /*
-    [암호 해독]
-    군 전략가 머쓱이는 전쟁 중 적군이 다음과 같은 암호 체계를 사용한다는 것을 알아냈습니다.
-    - 암호화된 문자열 cipher를 주고받습니다.
-    - 그 문자열에서 code의 배수 번째 글자만 진짜 암호입니다.
-    문자열 cipher와 정수 code가 매개변수로 주어질 때 해독된 암호 문자열을 return하도록
-    solution 함수를 완성해주세요.
+    [합성수 찾기]
+    약수의 개수가 세 개 이상인 수를 합성수라고 합니다.
+    자연수 n이 매개변수로 주어질 때 n이하의 합성수의 개수를 return하도록 solution 함수를 완성해주세요.
  */
-// 3점 획득. 단번에 통과!
+
 
 public class Solution1 {
     public static void main(String[] args) {
-        System.out.println(solution("dfjardstddetckdaccccdegk", 4));
-        System.out.println(solution("pfqallllabwaoclk", 2));
+        System.out.println(solution(10));
+        System.out.println(solution(15));
     }
 
-    public static String solution(String cipher, int code){
-        StringBuilder answer = new StringBuilder();
-        for(int i=code-1; i<cipher.length(); i+=code){
-            answer.append(cipher.charAt(i));
-        }
-        return answer.toString();
+    public static int solution (int n){
+        List<Integer> more3 = new ArrayList<>();
+
+
+       for(int i=1; i<=n; i++){
+           int count = 0;
+           for(int j=1; j*j <=i; j++){
+               if(j*j == i) count++;
+               else if(i % j == 0) count += 2;
+           }
+           /*
+           * j가 i의 제곱근 이하인 값에 대해서만 약수를 확인하도록 제한.
+           * 제곱근보다 큰 값에 대해서는 이미 짝을 이루는 약수가 찾아졌으므로 추가로 확인할 필요가 없다.
+           * */
+           if(count >= 3) more3.add(i);
+       }
+
+        return more3.size();
     }
 
 

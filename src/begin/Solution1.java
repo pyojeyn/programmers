@@ -6,32 +6,38 @@ import java.util.stream.IntStream;
 
 
 /*
-    [종이 자르기]
-머쓱이는 큰 종이를 1 x 1 크기로 자르려고 합니다. 예를 들어 2 x 2 크기의 종이를 1 x 1 크기로 자르려면 최소 가위질 세 번이 필요합니다.
-정수 M, N이 매개변수로 주어질 때, M x N 크기의 종이를 최소로 가위질 해야하는 횟수를 return 하도록 solution 함수를 완성해보세요.
+    [저주의 숫자 3]
+3x 마을 사람들은 3을 저주의 숫자라고 생각하기 때문에 3의 배수와 숫자 3을 사용하지 않습니다. 3x 마을 사람들의 숫자는 다음과 같습니다.
+정수 n이 매개변수로 주어질 때, n을 3x 마을에서 사용하는 숫자로 바꿔 return하도록 solution 함수를 완성해주세요.
  */
 
-// 1점
+// 5점!!
 
 
 
 
 public class Solution1 {
     public static void main(String[] args) {
-        System.out.println(solution(2,2));
-        System.out.println(solution(2,5));
-        System.out.println(solution(1,1));
-
+        System.out.println(solution(15));
+        System.out.println(solution(40));
     }
 
 
+    public static int solution(int n){
+        Map<Integer, Integer> number3xMap = new HashMap<>();
+        // i: 10진숫자, j: 3x마을 숫자
+        int i = 1;
+        int j = 1;
+        while (i < 101){
 
-
-    public static int solution(int M, int N){
-        int minNum = Math.min(M, N);
-        int maxNum = Math.max(M, N);
-
-        return (minNum - 1) + ((maxNum - 1) * minNum);
+            while ((j % 3 == 0 || String.valueOf(j).contains("3"))){
+                j++;
+            }
+            number3xMap.put(i, j);
+            i++;
+            j++;
+        }
+        return number3xMap.get(n);
     }
 }
 

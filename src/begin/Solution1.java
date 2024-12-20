@@ -18,8 +18,8 @@ import java.util.stream.IntStream;
 
 public class Solution1 {
     public static void main(String[] args) {
-        System.out.println(solution(15));
-        System.out.println(solution(40));
+        System.out.println(solution_1(15));
+        System.out.println(solution_1(40));
     }
 
 
@@ -37,6 +37,26 @@ public class Solution1 {
             i++;
             j++;
         }
+        return number3xMap.get(n);
+    }
+
+    // 개선한 코드.
+    public static int solution_1(int n) {
+        Map<Integer, Integer> number3xMap = new HashMap<>();
+        int i = 1;
+        int j = 1;
+
+        while (i <= n) { // 제한을 n으로 조정
+            String jStr = String.valueOf(j);
+            while (j % 3 == 0 || jStr.contains("3")) {
+                j++;
+                jStr = String.valueOf(j); // j가 증가할 때마다 jStr 업데이트
+            }
+            number3xMap.put(i, j);
+            i++;
+            j++;
+        }
+
         return number3xMap.get(n);
     }
 }

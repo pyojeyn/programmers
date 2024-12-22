@@ -6,64 +6,82 @@ import java.util.stream.IntStream;
 
 
 /*
-    [문자열 밀기]
-문자열 "hello"에서 각 문자를 오른쪽으로 한 칸씩 밀고 마지막 문자는 맨 앞으로 이동시키면 "ohell"이 됩니다.
-이것을 문자열을 민다고 정의한다면 문자열 A와 B가 매개변수로 주어질 때,
-A를 밀어서 B가 될 수 있다면 밀어야 하는 최소 횟수를 return하고
-밀어서 B가 될 수 없으면 -1을 return 하도록 solution 함수를 완성해보세요.
+    [특이한 정렬]
+    정수 n을 기준으로 n과 가까운 수부터 정렬하려고 합니다.
+    이때 n으로부터의 거리가 같다면 더 큰 수를 앞에 오도록 배치합니다.
+    정수가 담긴 배열 numlist와 정수 n이 주어질 때
+    numlist의 원소를 n으로부터 가까운 순서대로 정렬한 배열을 return하도록 solution 함수를 완성해주세요.
  */
 
-// 8점!!!
+// 2점
 
 public class Solution1 {
     public static void main(String[] args) {
-        System.out.println(solution_2("hello", "lohel"));
-//        System.out.println(solution("apple", "elppa"));
-//        System.out.println(solution("atat", "tata"));
-//        System.out.println(solution("abc", "abc"));
+        System.out.println(Arrays.toString(solution(new int[]{1, 2, 3, 4, 5, 6}, 4)));
+        System.out.println(Arrays.toString(solution(new int[]{10000,20,36,47,40,6,10,7000}, 30)));
     }
 
 
-    public static int solution(String A, String B){
-        int answer = -1; // 불가능할때의 값으로 초기화
+    public static int[] solution(int[] numlist, int n){
+        int[] answer = {};
 
-        int pushCnt = 0;
-        for(int i=0; i<A.length(); i++){
-            if(A.equals(B)) { // 애초에 같으면 push 할 필요 없으니까 0 대입해주고 break.
-                answer = 0;
-                break;
-            }
-            A = A.charAt(A.length() - 1) + A.substring(0, A.length() - 1);
-            pushCnt++; // 한칸씩 밀때 마다 1씩 증가.
-            if(A.equals(B)) { // 한칸씩 밀릴때마다 B랑 같은지 비교하고 같으면 민 횟수 대입해주고 break
-                answer = pushCnt;
-                break;
-            }
+
+        // numlist 의 원소와 n과의 차이를 map에 저장.
+        Map<Integer, Integer> numChai = new HashMap<>();
+        for (int i=0; i<numlist.length; i++){
+            int chai = Math.abs(n - numlist[i]);
+            numChai.put(numlist[i], chai);
         }
+
+        // Map을 List로 변환하여 정렬
+        List<Map.Entry<Integer, Integer>> list = new ArrayList<>(numChai.entrySet());
+
+        // value 기준 오름차순, value가 같으면 key 기준 내림차순 정렬
+        list.sort((entry1, entry2) -> {
+            int valueCompare = entry1.getValue().compareTo(entry2.getValue()); // 두 값의 대소 비교
+
+            if (valueCompare == 0) {
+                // value가 같으면 key를 내림차순으로 정렬
+                return entry2.getKey().compareTo(entry1.getKey());
+            }
+            return valueCompare; // valueCompare이 0 이 아니라면 value 값으로 정렬
+        });
+
+/*        [compareTo의 결과와 동작]
+        ** sort 메서드는 Comparator 인터페이스를 기반으로 동작하며,
+           return 값이 음수/양수/0인지에 따라 두 값을 어떻게 정렬할지 결정합니다.
+        * entry1.getValue().compareTo(entry2.getValue())는 두 값을 비교해서 다음과 같은 결과를 반환
+        1. 음수 (-1 같은 값):
+        entry1.getValue()가 entry2.getValue()보다 작다는 뜻입니다.
+          → entry1이 entry2보다 앞에 위치. (첫 번째 값이 앞에)
+        2. 0:
+          두 값이 같다는 뜻입니다.
+          → 두 요소의 순서는 바뀌지 않음.
+        3. 양수 (1 같은 값):
+        entry1.getValue()가 entry2.getValue()보다 크다는 뜻입니다.
+          → entry1이 entry2보다 뒤로 이동. (두 번째 값이 앞에)
+
+     * 요약
+     * list.sort((a,b) -> <결과값>)
+     * 1. <결과값> 은 음수/양수/0 을 반환하는 로직. (return은 항상 -1, 1, 0)
+     * 2. 반환된 값에 따라 두 값의 순서를 결정.
+     * 3. 양수, 음수 여부에 따라 정렬 순서가 오름차순인지 내림차순인지 결정됨.
+     *
+     *
+     * sort(a,b)
+     * -> b - a / b.compareTo(a) : 내림차순
+     * -> a - b / a.compareTo(b) : 오름차순
+     *
+
+  */
+
+
+       // key 값인 numlist 의 원소들을 배열에 저장.
+        answer = list.stream()
+                        .map(Map.Entry::getKey)
+                        .mapToInt(x -> x)
+                        .toArray();
         return answer;
-    }
-
-    // 개선된 코드
-    public static int solution_1(String A, String B){
-        if(A.equals(B)){
-            return 0; // A와 B가 처음부터 같으면 바로 0 반환
-        }
-
-        for(int pushCnt=1; pushCnt<A.length(); pushCnt++){
-            A = A.charAt(A.length() - 1) + A.substring(0, A.length() - 1);
-            if(A.equals(B)){
-                return pushCnt;
-            }
-        }
-
-        return -1;
-    }
-
-    // others
-    public static int solution_2(String A, String B) {
-        String tempB = B.repeat(3);
-        System.out.println("tempB= " + tempB);
-        return tempB.indexOf(A);
     }
 
 

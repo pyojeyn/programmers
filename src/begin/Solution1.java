@@ -6,64 +6,68 @@ import java.util.stream.IntStream;
 
 
 /*
-    [유한 소수 판별하기]
-소수점 아래 숫자가 계속되지 않고 유한개인 소수를 유한소수라고 합니다.
-분수를 소수로 고칠 때 유한소수로 나타낼 수 있는 분수인지 판별하려고 합니다.
-유한소수가 되기 위한 분수의 조건은 다음과 같습니다.
-    -> 기약분수로 나타내었을 때, 분모의 소인수가 2와 5만 존재해야 합니다.
-두 정수 a와 b가 매개변수로 주어질 때, a/b가 유한소수이면 1을, 무한소수라면 2를 return하도록 solution 함수를 완성해주세요.
+    [문자열 밀기]
+문자열 "hello"에서 각 문자를 오른쪽으로 한 칸씩 밀고 마지막 문자는 맨 앞으로 이동시키면 "ohell"이 됩니다.
+이것을 문자열을 민다고 정의한다면 문자열 A와 B가 매개변수로 주어질 때,
+A를 밀어서 B가 될 수 있다면 밀어야 하는 최소 횟수를 return하고
+밀어서 B가 될 수 없으면 -1을 return 하도록 solution 함수를 완성해보세요.
  */
 
+// 8점!!!
 
-// 10점!!
 public class Solution1 {
     public static void main(String[] args) {
-        System.out.println(solution(12, 21));
-        System.out.println(getGCD(12, 16));
-        System.out.println(primeFactorization(24));
+        System.out.println(solution_2("hello", "lohel"));
+//        System.out.println(solution("apple", "elppa"));
+//        System.out.println(solution("atat", "tata"));
+//        System.out.println(solution("abc", "abc"));
     }
 
 
-    public static int solution(int a, int b){
-        int answer = 0;
-        /* 최대공약수 구하기 -> 유클리드 호제법 */
-        int gcd = getGCD(a, b);
-        b /= gcd;
+    public static int solution(String A, String B){
+        int answer = -1; // 불가능할때의 값으로 초기화
 
-        /* 소인수분해하기 */
-        List<Integer> sosus = primeFactorization(b);
-
-        /* 소수들 중 2와 5 이외의 숫자가 있는지에 대한 여부. */
-        boolean existsOtherNumbers = sosus.stream().anyMatch(num -> num != 2 && num != 5);
-        answer = existsOtherNumbers ? 2 : 1;
+        int pushCnt = 0;
+        for(int i=0; i<A.length(); i++){
+            if(A.equals(B)) { // 애초에 같으면 push 할 필요 없으니까 0 대입해주고 break.
+                answer = 0;
+                break;
+            }
+            A = A.charAt(A.length() - 1) + A.substring(0, A.length() - 1);
+            pushCnt++; // 한칸씩 밀때 마다 1씩 증가.
+            if(A.equals(B)) { // 한칸씩 밀릴때마다 B랑 같은지 비교하고 같으면 민 횟수 대입해주고 break
+                answer = pushCnt;
+                break;
+            }
+        }
         return answer;
     }
 
-    /* 유클리드 호제법 */
-    // 두 수를 나눗셈 반복하여 나머지가 0이 될 때까지 계산 -> 마지막으로 나머지가 0이 되었을 때의 나누는 수가 최대공약수가 된다.
-    public static int getGCD(int a, int b){
-        while (b != 0){
-            int temp = b;
-            b = a % b;
-            a = temp;
+    // 개선된 코드
+    public static int solution_1(String A, String B){
+        if(A.equals(B)){
+            return 0; // A와 B가 처음부터 같으면 바로 0 반환
         }
-        return a;
-    }
 
-    /* 소인수분해 */
-    public static List<Integer> primeFactorization(int b){
-        List<Integer> sosus = new ArrayList<>();
-        for (int i=2; i<=b; i++){
-            if(b % i == 0){
-                while (b % i == 0){
-                    b /= i; // i로 나눌 수 있을 때까지 나눔
-                }
-                sosus.add(i);
+        for(int pushCnt=1; pushCnt<A.length(); pushCnt++){
+            A = A.charAt(A.length() - 1) + A.substring(0, A.length() - 1);
+            if(A.equals(B)){
+                return pushCnt;
             }
         }
 
-        return sosus;
+        return -1;
     }
+
+    // others
+    public static int solution_2(String A, String B) {
+        String tempB = B.repeat(3);
+        System.out.println("tempB= " + tempB);
+        return tempB.indexOf(A);
+    }
+
+
+
 
 
 
